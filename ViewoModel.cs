@@ -109,5 +109,50 @@ namespace ReadTextByVoice
                 bookmarker = value;
             }
         }
+
+
+        /// <summary>
+        /// 保存加载的图书信息到本地
+        /// </summary>
+        void SaveAllBookInfos()
+        {
+
+        }
+
+        /// <summary>
+        /// 加载本地的图书信息
+        /// </summary>
+        void LoadLocalBookinfos()
+        {
+
+        }
+
+        /// <summary>
+        /// 加载选中图书，显示目录信息
+        /// </summary>
+        /// <param name="ebook"></param>
+        void ShowBookCatalog(book ebook)
+        {
+
+        }
+
+
+        /// <summary>
+        /// 以文本的方式显示图书
+        /// </summary>
+        /// <param name="ebook"></param>
+        void ShowBookByText(book ebook)
+        {
+
+        }
+
+        /// <summary>
+        /// 重头开始阅读
+        /// </summary>
+        /// <param name="ebook"></param>
+        void ReReader(book ebook)
+        {
+
+        }
     }
 }
