@@ -9,6 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.IO;
+using System.Collections.ObjectModel;
+using System.Xaml;
+using System.Xml.Serialization;
 
 namespace ReadTextByVoice
 {
@@ -17,6 +21,14 @@ namespace ReadTextByVoice
         public ViewoModel()
         {
             reader = new SpeechSynthesizer();
+            reader.SpeakCompleted += Reader_SpeakCompleted;
+
+            LoadLocalBookinfos();
+        }
+
+        private void Reader_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         SpeechSynthesizer reader;
@@ -24,6 +36,7 @@ namespace ReadTextByVoice
         string targetText;
         string filePath;
         int bookmarker;
+        ObservableCollection<book> allBooks = new ObservableCollection<book>();
         public ICommand ReadTextCmd
         {
             get
@@ -60,6 +73,34 @@ namespace ReadTextByVoice
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// 将新的图书信息添加到图书列表中
+        /// </summary>
+        public ICommand LoadBookCmd
+        {
+            get => new DelegateCommand(()=> 
+            {
+                if (File.Exists(FilePath))
+                {
+                    FileStream fs = new FileStream(FilePath, FileMode.Open);
+                    book ebook = new book();
+                    ebook.BookName = GetBookNameFromFilePath(filePath);
+                    ebook.Size =Math.Round( fs.Length / 1024.0d / 10224.0d,2);
+                    fs.Close();
+                    if (allBooks.Where(o => o.BookName.Equals(ebook.BookName)).Count() == 0)
+                    {
+                        allBooks.Add(ebook);
+                        SaveAllBookInfos();
+                    }
+                }
+            });
+        }
+
+        string GetBookNameFromFilePath(string path)
+        {
+            return path.Substring(path.LastIndexOf("\\") + 1);
         }
 
         /// <summary>
@@ -110,13 +151,21 @@ namespace ReadTextByVoice
             }
         }
 
+        public ObservableCollection<book> AllBooks { get => allBooks; set => allBooks = value; }
+
 
         /// <summary>
         /// 保存加载的图书信息到本地
         /// </summary>
         void SaveAllBookInfos()
         {
-
+            if (allBooks.Count > 0)
+            {
+                FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Write);
+                XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<book>));
+                serial.Serialize(fs, allBooks);
+                fs.Close();
+            }
         }
 
         /// <summary>
@@ -124,7 +173,15 @@ namespace ReadTextByVoice
         /// </summary>
         void LoadLocalBookinfos()
         {
-
+            FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Read);
+            if (fs.Length == 0)
+            {
+                fs.Close();
+                return;
+            }
+            XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<book>));
+            allBooks= serial.Deserialize(fs) as ObservableCollection<book>;
+            fs.Close();
         }
 
         /// <summary>

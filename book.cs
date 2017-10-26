@@ -14,6 +14,7 @@ namespace ReadTextByVoice
         string bookName;
         double progress;
         string path;
+        double size;
 
         public string BookName
         {
@@ -53,5 +54,7 @@ namespace ReadTextByVoice
                 path = value;
             }
         }
+
+        public double Size { get => size; set => size = value; }
     }
 }

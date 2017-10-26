@@ -22,16 +22,17 @@
         <TextBlock Text="TargetText" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <TextBox Text="{Binding TargetText}" Grid.Column="1" Margin="5" Grid.ColumnSpan="3"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4">
-            <Button Content="选择" Width="50" Command="{Binding SelectLogFileCmd}"/>
+            <Button Content="选择" Width="50" Command="{Binding SelectFileCmd}" Margin="5"/>
             <TextBox Text="{Binding LogFileName}" Width="400" AllowDrop="True" Height="40"/>
-            <Button Content="加载" Width="50" Command="{Binding LoadLogCmd}"/>
+            <Button Content="加载" Width="50" Margin="5" Command="{Binding LoadBookCmd}"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5">
             <DataGrid.Columns>
                 <DataGridTextColumn MinWidth="100" Header="书名" Binding="{Binding BookName}"/>
-                <DataGridTextColumn MinWidth="100" Header="目录" Binding="{Binding BookPath}"/>
-                <DataGridTextColumn Header="进度" Binding="{Binding Progress}"/>
+                <DataGridTextColumn MinWidth="100" Header="大小" Binding="{Binding Size}"/>
+                <DataGridTextColumn MinWidth="100" Width="*" Header="目录" Binding="{Binding Path}"/>
+                <DataGridTextColumn Width="100" Header="进度" Binding="{Binding Progress}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="«" FontSize="28" Command="{Binding ReadTextCmd}" Grid.Row="3" Margin="5"/>

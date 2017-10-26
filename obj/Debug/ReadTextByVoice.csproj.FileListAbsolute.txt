@@ -17,3 +17,4 @@ D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.csproj.GenerateResource.Cache
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.exe
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.pdb
+D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.csproj.CoreCompileInputs.cache
