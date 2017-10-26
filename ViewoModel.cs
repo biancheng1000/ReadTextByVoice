@@ -26,9 +26,17 @@ namespace ReadTextByVoice
             LoadLocalBookinfos();
         }
 
+        void ReadTextFromFile()
+        {
+            if (SelectedBook != null)
+            {
+
+            }
+        }
+
         private void Reader_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("声音播放完成");
         }
 
         SpeechSynthesizer reader;
@@ -36,7 +44,12 @@ namespace ReadTextByVoice
         string targetText;
         string filePath;
         int bookmarker;
+        book selectedBook;
         ObservableCollection<book> allBooks = new ObservableCollection<book>();
+
+        /// <summary>
+        /// 开始播放选中的txt
+        /// </summary>
         public ICommand ReadTextCmd
         {
             get
@@ -44,7 +57,7 @@ namespace ReadTextByVoice
                 return new DelegateCommand(
                     ()=> 
                     {
-                        reader.SpeakAsync(TargetText);
+                        
                     }
                     );
             }
@@ -91,12 +104,15 @@ namespace ReadTextByVoice
                     fs.Close();
                     if (allBooks.Where(o => o.BookName.Equals(ebook.BookName)).Count() == 0)
                     {
-                        allBooks.Add(ebook);
+                        AllBooks.Add(ebook);
+                        SelectedBook = ebook;
                         SaveAllBookInfos();
                     }
                 }
             });
         }
+
+
 
         string GetBookNameFromFilePath(string path)
         {
@@ -152,6 +168,7 @@ namespace ReadTextByVoice
         }
 
         public ObservableCollection<book> AllBooks { get => allBooks; set => allBooks = value; }
+        public book SelectedBook { get => selectedBook; set => selectedBook = value; }
 
 
         /// <summary>
