@@ -13,6 +13,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using System.Xaml;
 using System.Xml.Serialization;
+using System.Text.RegularExpressions;
 
 namespace ReadTextByVoice
 {
@@ -36,7 +37,7 @@ namespace ReadTextByVoice
 
         private void Reader_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
-            Console.WriteLine("声音播放完成");
+            
         }
 
         SpeechSynthesizer reader;
@@ -44,8 +45,8 @@ namespace ReadTextByVoice
         string targetText;
         string filePath;
         int bookmarker;
-        book selectedBook;
-        ObservableCollection<book> allBooks = new ObservableCollection<book>();
+        Novel selectedBook;
+        ObservableCollection<Novel> allBooks = new ObservableCollection<Novel>();
 
         /// <summary>
         /// 开始播放选中的txt
@@ -54,17 +55,140 @@ namespace ReadTextByVoice
         {
             get
             {
-                return new DelegateCommand(
-                    ()=> 
+                return new DelegateCommand(Play);
+            }
+        }
+
+        bool ispause = false;
+        /// <summary>
+        /// 开始播放选中的txt
+        /// </summary>
+        public ICommand PauseCmd
+        {
+            get
+            {
+                return new DelegateCommand(()=> 
+                {
+                    if (!ispause)
                     {
-                        
+                        reader.Pause();
+                        ispause = true;
                     }
-                    );
+                    else
+                    {
+                        ispause = false;
+                        reader.Resume();
+                    }
+                });
+            }
+        }
+
+        private void Play()
+        {
+            //加载选中的章节，加载并进行阅读
+            if (!string.IsNullOrEmpty(SelectedBook.CurrentReadedChapter.ChapterConent))
+            {
+                reader.SpeakAsync(SelectedBook.CurrentReadedChapter.ChapterConent);
             }
         }
 
         /// <summary>
-        /// 选择文本
+        /// 上一章
+        /// </summary>
+        public ICommand PreviouCmd
+        {
+            get
+            {
+                return new DelegateCommand(()=> 
+                {
+                    if (SelectedBook != null)
+                    {
+                        SelectedBook.MovePreviou();
+                        Play();
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// 上一章
+        /// </summary>
+        public ICommand NextCmd
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    if (SelectedBook != null)
+                    {
+                        SelectedBook.MoveNext();
+                        Play();
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// reset the novel
+        /// </summary>
+        public ICommand RestCmd
+        {
+            get
+            {
+                return new DelegateCommand(()=> 
+                {
+                    if (SelectedBook!=null)
+                    {
+                        SelectedBook.CurrentReadedChapter = null;
+                    }
+                });
+            }
+        }
+
+        string chapterNameText;
+        /// <summary>
+        /// Serch and load target chapter in the selected novel 
+        /// </summary>
+        public ICommand SerchCmd
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    if (SelectedBook != null)
+                    {
+                        if (string.IsNullOrEmpty(chapterNameText))
+                        {
+                            return;
+                        }
+                       Chapter echapter=SelectedBook.Catalogs.FirstOrDefault(o => o.Name.Contains(chapterNameText));
+                        if (echapter != null)
+                        {
+                            SelectedBook.CurrentReadedChapter = echapter;
+                            MessageBox.Show($"成功找到{echapter.Name}");
+                        }
+                        else
+                        {
+                            MessageBox.Show($"没有找到{echapter.Name}");
+                        }
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// 保存信息
+        /// </summary>
+        public ICommand SaveCmd
+        {
+            get
+            {
+                return new DelegateCommand(SaveAllBookInfos);
+            }
+        }
+
+        /// <summary>
+        ///select novel
         /// </summary>
         public ICommand SelectFileCmd
         {
@@ -97,11 +221,7 @@ namespace ReadTextByVoice
             {
                 if (File.Exists(FilePath))
                 {
-                    FileStream fs = new FileStream(FilePath, FileMode.Open);
-                    book ebook = new book();
-                    ebook.BookName = GetBookNameFromFilePath(filePath);
-                    ebook.Size =Math.Round( fs.Length / 1024.0d / 10224.0d,2);
-                    fs.Close();
+                    Novel ebook = new Novel(filePath);
                     if (allBooks.Where(o => o.BookName.Equals(ebook.BookName)).Count() == 0)
                     {
                         AllBooks.Add(ebook);
@@ -110,13 +230,6 @@ namespace ReadTextByVoice
                     }
                 }
             });
-        }
-
-
-
-        string GetBookNameFromFilePath(string path)
-        {
-            return path.Substring(path.LastIndexOf("\\") + 1);
         }
 
         /// <summary>
@@ -167,8 +280,9 @@ namespace ReadTextByVoice
             }
         }
 
-        public ObservableCollection<book> AllBooks { get => allBooks; set => allBooks = value; }
-        public book SelectedBook { get => selectedBook; set => selectedBook = value; }
+        public ObservableCollection<Novel> AllBooks { get => allBooks; set => allBooks = value; }
+        public Novel SelectedBook { get => selectedBook; set => selectedBook = value; }
+        public string ChapterNameText { get => chapterNameText; set => chapterNameText = value; }
 
 
         /// <summary>
@@ -178,10 +292,10 @@ namespace ReadTextByVoice
         {
             if (allBooks.Count > 0)
             {
-                FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Write);
-                XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<book>));
-                serial.Serialize(fs, allBooks);
-                fs.Close();
+                //FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Write);
+                //XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<Novel>));
+                //serial.Serialize(fs, allBooks);
+                //fs.Close();
             }
         }
 
@@ -196,8 +310,8 @@ namespace ReadTextByVoice
                 fs.Close();
                 return;
             }
-            XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<book>));
-            allBooks= serial.Deserialize(fs) as ObservableCollection<book>;
+            XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<Novel>));
+            allBooks= serial.Deserialize(fs) as ObservableCollection<Novel>;
             fs.Close();
         }
 
@@ -205,7 +319,7 @@ namespace ReadTextByVoice
         /// 加载选中图书，显示目录信息
         /// </summary>
         /// <param name="ebook"></param>
-        void ShowBookCatalog(book ebook)
+        void ShowBookCatalog(Novel ebook)
         {
 
         }
@@ -215,7 +329,7 @@ namespace ReadTextByVoice
         /// 以文本的方式显示图书
         /// </summary>
         /// <param name="ebook"></param>
-        void ShowBookByText(book ebook)
+        void ShowBookByText(Novel ebook)
         {
 
         }
@@ -224,9 +338,12 @@ namespace ReadTextByVoice
         /// 重头开始阅读
         /// </summary>
         /// <param name="ebook"></param>
-        void ReReader(book ebook)
+        void ReReader(Novel ebook)
         {
 
         }
+
+
+      
     }
 }

@@ -6,7 +6,6 @@ D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.dll
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\Microsoft.Practices.Prism.Mvvm.xml
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\Microsoft.Practices.Prism.SharedInterfaces.xml
-D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.csprojResolveAssemblyReference.cache
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\App.g.cs
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice_MarkupCompile.cache
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice_MarkupCompile.lref
@@ -16,7 +15,6 @@ D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.exe
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.pdb
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.csproj.CoreCompileInputs.cache
-D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\MainView.g.cs
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\Shell.g.cs
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\Microsoft.Practices.Prism.Composition.dll
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\Microsoft.Practices.Prism.Interactivity.dll
@@ -45,5 +43,7 @@ D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\ru\System.Windows.Interactivity.resources.dll
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\MainView.baml
 D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\Shell.baml
+D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\bussniess\View\MainView.g.cs
+D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\bussniess\View\MainView.baml
+D:\软件和资料\源码参考\github\ReadTextByVoice\ReadTextByVoice\obj\Debug\ReadTextByVoice.csprojResolveAssemblyReference.cache

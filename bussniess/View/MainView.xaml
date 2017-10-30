@@ -5,7 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReadTextByVoice"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="60"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="135*"/>
@@ -19,27 +24,32 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="TargetText" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <TextBox Text="{Binding TargetText}" Grid.Column="1" Margin="5" Grid.ColumnSpan="3"/>
+        <TextBlock Text="Chapter" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBox Text="{Binding ChapterNameText}" Grid.Column="1" Margin="5" Grid.ColumnSpan="2"/>
+        <Button Content="Search" Command="{Binding SerchCmd}" Grid.Column="4" Margin="5" />
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4">
             <Button Content="选择" Width="50" Command="{Binding SelectFileCmd}" Margin="5"/>
             <TextBox Text="{Binding FilePath}" Width="400" AllowDrop="True" Height="40"/>
             <Button Content="加载" Width="50" Margin="5" Command="{Binding LoadBookCmd}"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5"
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5,4.8,5,0"
                   SelectedItem="{Binding SelectedBook}"
-                  ItemsSource="{Binding AllBooks}" CanUserAddRows="False">
+                  ItemsSource="{Binding AllBooks}" AutoGenerateColumns="False" CanUserAddRows="False" Height="141" VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn MinWidth="100" Header="书名" Binding="{Binding BookName}"/>
                 <DataGridTextColumn MinWidth="100" Header="大小(M)" Binding="{Binding Size}"/>
-                <DataGridTextColumn MinWidth="100" Width="*" Header="目录" Binding="{Binding Path}"/>
+                <DataGridTextColumn MinWidth="100" Width="*" Header="章节" Binding="{Binding Display}"/>
                 <DataGridTextColumn Width="100" Header="进度" Binding="{Binding Progress}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="«" FontSize="28" Command="{Binding ReadTextCmd}" Grid.Row="3" Margin="5"/>
-        <Button Content="||" FontSize="20" Command="{Binding PauseCmd}" Grid.Row="3" Grid.Column="2" Margin="5"/>
-        <Button Content="▶" FontSize="20" Command="{Binding ReadTextCmd}" Grid.Row="3" Grid.Column="1" Margin="5"/>
-        <Button Content="»" FontSize="28" Command="{Binding PauseCmd}" Grid.Row="3" Grid.Column="3" Margin="5"/>
+        <StackPanel Orientation="Horizontal"  Grid.Row="3" Margin="5" Grid.ColumnSpan="5" HorizontalAlignment="Center">
+            <Button Content="«" FontSize="28" Command="{Binding PreviouCmd}"/>
+            <Button Content="||" FontSize="20" Command="{Binding PauseCmd}"  Margin="5"/>
+            <Button Content="▶" FontSize="20" Command="{Binding ReadTextCmd}"  Margin="5"/>
+            <Button Content="»" FontSize="28" Command="{Binding NextCmd}"  Margin="5"/>
+            <Button Content="Reset" FontSize="18" Command="{Binding RestCmd}"  Margin="5"/>
+            <Button Content="Save" FontSize="18" Command="{Binding SaveCmd}"  Margin="5"/>
+        </StackPanel>
     </Grid>
 </UserControl>

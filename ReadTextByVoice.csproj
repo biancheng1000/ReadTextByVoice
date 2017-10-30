@@ -90,14 +90,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="book.cs" />
+    <Compile Include="bussniess\model\book.cs" />
     <Compile Include="BootStrapper.cs" />
+    <Compile Include="bussniess\model\Chapter.cs" />
     <Compile Include="MainModule.cs" />
-    <Compile Include="MainView.xaml.cs">
+    <Compile Include="bussniess\View\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewoModel.cs" />
-    <Page Include="MainView.xaml">
+    <Compile Include="bussniess\ViewModel\ViewoModel.cs" />
+    <Page Include="bussniess\View\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
