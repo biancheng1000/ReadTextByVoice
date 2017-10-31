@@ -23,21 +23,27 @@ namespace ReadTextByVoice
         {
             reader = new SpeechSynthesizer();
             reader.SpeakCompleted += Reader_SpeakCompleted;
-
+            reader.SpeakProgress += Reader_SpeakProgress;
+            reader.Rate = 1;
             LoadLocalBookinfos();
         }
 
-        void ReadTextFromFile()
+        private void Reader_SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
-            if (SelectedBook != null)
+            double p =Math.Round(((e.CharacterPosition*1.0d) / (SelectedBook.CurrentReadedChapter.ChapterConent.Length*1.0d))*100,1);
+            Progress = (int)p;
+            if (p>=99)
             {
-
+                Console.WriteLine(e.CharacterPosition + "," + SelectedBook.CurrentReadedChapter.ChapterConent.Length);
+                Console.WriteLine("自动开始下一章"+ SelectedBook.CurrentReadedChapter.NextChapter?.Name);
+                NextCmd.Execute(null);
+                progress = 0;
             }
         }
 
         private void Reader_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
-            
+            //NextCmd.Execute(null);
         }
 
         SpeechSynthesizer reader;
@@ -46,8 +52,9 @@ namespace ReadTextByVoice
         string filePath;
         int bookmarker;
         Novel selectedBook;
+        int progress;
         ObservableCollection<Novel> allBooks = new ObservableCollection<Novel>();
-
+        Prompt currentPlayprompt = null;
         /// <summary>
         /// 开始播放选中的txt
         /// </summary>
@@ -85,6 +92,9 @@ namespace ReadTextByVoice
 
         private void Play()
         {
+
+            reader.SpeakAsyncCancelAll();
+            
             //加载选中的章节，加载并进行阅读
             if (!string.IsNullOrEmpty(SelectedBook.CurrentReadedChapter.ChapterConent))
             {
@@ -169,7 +179,7 @@ namespace ReadTextByVoice
                         }
                         else
                         {
-                            MessageBox.Show($"没有找到{echapter.Name}");
+                            MessageBox.Show($"没有找到");
                         }
                     }
                 });
@@ -281,8 +291,9 @@ namespace ReadTextByVoice
         }
 
         public ObservableCollection<Novel> AllBooks { get => allBooks; set => allBooks = value; }
-        public Novel SelectedBook { get => selectedBook; set => selectedBook = value; }
+        public Novel SelectedBook { get => selectedBook; set =>SetProperty<Novel>(ref selectedBook,value); }
         public string ChapterNameText { get => chapterNameText; set => chapterNameText = value; }
+        public int Progress { get => progress; set =>SetProperty<int>(ref progress , value); }
 
 
         /// <summary>

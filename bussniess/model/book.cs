@@ -79,7 +79,7 @@ namespace ReadTextByVoice
                 }
                 return lastReadedChapter;
             }
-            set => lastReadedChapter = value; }
+            set =>SetProperty<Chapter>(ref lastReadedChapter,value); }
 
         public string Display { get => display; set => SetProperty<string>(ref display,value); }
 
@@ -102,7 +102,7 @@ namespace ReadTextByVoice
 
         public void MoveNext()
         {
-            if (CurrentReadedChapter.NextChapter != null)
+            if (CurrentReadedChapter?.NextChapter != null)
             {
                 CurrentReadedChapter = CurrentReadedChapter.NextChapter;
             }
@@ -123,7 +123,7 @@ namespace ReadTextByVoice
             await Task.Run(()=> 
             {
             FileStream fs = new FileStream(path, FileMode.Open);
-            Size = Math.Round(fs.Length / 1024.0d / 10224.0d, 2);
+            Size = Math.Round(fs.Length / 1024.0d / 1024.0d, 2);
             StreamReader rs = new StreamReader(fs);
             Chapter lastChapter = null;
             Chapter currentChaper = null;
@@ -150,6 +150,7 @@ namespace ReadTextByVoice
                         ch.PreviousChapter = lastChapter;
                         lastChapter.NextChapter = ch;
                     }
+                    lastChapter = ch;
                     Display = cap;
                 }
                 else

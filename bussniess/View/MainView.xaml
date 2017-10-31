@@ -21,19 +21,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="122*"/>
+            <RowDefinition Height="29*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Chapter" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <TextBox Text="{Binding ChapterNameText}" Grid.Column="1" Margin="5" Grid.ColumnSpan="2"/>
-        <Button Content="Search" Command="{Binding SerchCmd}" Grid.Column="4" Margin="5" />
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4">
+        <TextBlock Text="Chapter" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="55,17,55,16.6" />
+        <TextBox Text="{Binding ChapterNameText}" Grid.Column="1" Margin="5,5,4.8,4.6" />
+        <Button Content="Goto" Command="{Binding SerchCmd}" Grid.Column="2" Margin="5.2,5,5.4,4.6" />
+        <TextBlock Text="{Binding SelectedBook.CurrentReadedChapter.Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="3" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,0.4,0,0.2">
             <Button Content="选择" Width="50" Command="{Binding SelectFileCmd}" Margin="5"/>
             <TextBox Text="{Binding FilePath}" Width="400" AllowDrop="True" Height="40"/>
             <Button Content="加载" Width="50" Margin="5" Command="{Binding LoadBookCmd}"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5,4.8,5,0"
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5"
                   SelectedItem="{Binding SelectedBook}"
                   ItemsSource="{Binding AllBooks}" AutoGenerateColumns="False" CanUserAddRows="False" Height="141" VerticalAlignment="Top">
             <DataGrid.Columns>
@@ -43,7 +45,8 @@
                 <DataGridTextColumn Width="100" Header="进度" Binding="{Binding Progress}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Orientation="Horizontal"  Grid.Row="3" Margin="5" Grid.ColumnSpan="5" HorizontalAlignment="Center">
+        <Slider Maximum="100" Grid.Row="3" Grid.ColumnSpan="4" Margin="5" Value="{Binding Progress}" Minimum="0.1"/>
+        <StackPanel Orientation="Horizontal"  Grid.Row="4" Margin="94,4.6,94,5" Grid.ColumnSpan="4" HorizontalAlignment="Center">
             <Button Content="«" FontSize="28" Command="{Binding PreviouCmd}"/>
             <Button Content="||" FontSize="20" Command="{Binding PauseCmd}"  Margin="5"/>
             <Button Content="▶" FontSize="20" Command="{Binding ReadTextCmd}"  Margin="5"/>
