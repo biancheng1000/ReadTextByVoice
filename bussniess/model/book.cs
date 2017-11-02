@@ -83,9 +83,9 @@ namespace ReadTextByVoice
 
         public string Display { get => display; set => SetProperty<string>(ref display,value); }
 
-        private string GetCapterFromString(string capterstring)
+        public string GetCapterFromString(string capterstring)
         {
-            Match result = Regex.Match(capterstring, "[第]([0-9]*|[一-十]*[零]?千?[一-十]?[零]?百?[一-十]*十?[一-十]*[零]?)[章]");
+            Match result = Regex.Match(capterstring, "[第]([0-9]*|[一-十,四,零]?千?[一-十,四,零]?百?[一-十,四,零]?十?[一-十,四,零]?)[章].*");
             if (result.Success)
             {
                 return result.Value;
