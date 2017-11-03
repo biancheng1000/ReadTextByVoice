@@ -167,20 +167,7 @@ namespace ReadTextByVoice
                 {
                     if (SelectedBook != null)
                     {
-                        if (string.IsNullOrEmpty(chapterNameText))
-                        {
-                            return;
-                        }
-                       Chapter echapter=SelectedBook.Catalogs.FirstOrDefault(o => o.Name.Contains(chapterNameText));
-                        if (echapter != null)
-                        {
-                            SelectedBook.CurrentReadedChapter = echapter;
-                            MessageBox.Show($"成功找到{echapter.Name}");
-                        }
-                        else
-                        {
-                            MessageBox.Show($"没有找到");
-                        }
+                        SelectedBook.Serach(chapterNameText);
                     }
                 });
             }
@@ -303,10 +290,17 @@ namespace ReadTextByVoice
         {
             if (allBooks.Count > 0)
             {
-                //FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Write);
-                //XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<Novel>));
-                //serial.Serialize(fs, allBooks);
-                //fs.Close();
+                if (File.Exists(System.Environment.CurrentDirectory + "//bookinfo.data"))
+                {
+                    File.Delete(System.Environment.CurrentDirectory + "//bookinfo.data");
+                }
+                FileStream fs = new FileStream(System.Environment.CurrentDirectory+ "//bookinfo.data", FileMode.OpenOrCreate, FileAccess.Write);
+                StreamWriter rs = new StreamWriter(fs);
+                foreach (Novel en in allBooks)
+                {
+                    rs.WriteLine(en.Path +";"+en.CurrentReadedChapter.Name);
+                }
+                rs.Close();
             }
         }
 
@@ -315,15 +309,17 @@ namespace ReadTextByVoice
         /// </summary>
         void LoadLocalBookinfos()
         {
-            FileStream fs = new FileStream("\\bookinfo.xml", FileMode.OpenOrCreate, FileAccess.Read);
-            if (fs.Length == 0)
+            FileStream fs = new FileStream(System.Environment.CurrentDirectory + "//bookinfo.data", FileMode.OpenOrCreate, FileAccess.Write);
+            StreamReader rs = new StreamReader(fs);
+            while (!rs.EndOfStream)
             {
-                fs.Close();
-                return;
+               string temp= rs.ReadLine();
+               string[] bk = temp.Split(';');
+                Novel novel = new Novel(bk[0]);
+                allBooks.Add(novel);
+
             }
-            XmlSerializer serial = new XmlSerializer(typeof(ObservableCollection<Novel>));
-            allBooks= serial.Deserialize(fs) as ObservableCollection<Novel>;
-            fs.Close();
+            rs.Close();
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ReadTextByVoice
 {
@@ -163,6 +164,31 @@ namespace ReadTextByVoice
             }
             fs.Close();
             });
+        }
+
+        public void Serach(string captionstr,bool isMsg=false)
+        {
+            if (string.IsNullOrEmpty(captionstr))
+            {
+                return;
+            }
+            Chapter echapter = Catalogs.FirstOrDefault(o => o.Name.Contains(captionstr));
+            if (echapter != null)
+            {
+                CurrentReadedChapter = echapter;
+                if (isMsg)
+                {
+                    MessageBox.Show($"成功找到{echapter.Name}");
+                }
+                
+            }
+            else
+            {
+                if (isMsg)
+                {
+                    MessageBox.Show($"没有找到");
+                }
+            }
         }
     }
 }
