@@ -22,6 +22,8 @@ namespace ReadTextByVoice
             this.path = path;
             LoadChapter();
         }
+
+        IList<string> filter = new List<string>() { "www.pbtxt.cOm" };
         string bookName;
         double progress;
         string path;
@@ -132,6 +134,12 @@ namespace ReadTextByVoice
             {
                 long pos = rs.BaseStream.Position;
                 string content = rs.ReadLine();
+
+                Array.ForEach(filter.ToArray(), (o) => 
+                {
+                    content.Replace(o, "");
+                });
+
                 if (string.IsNullOrEmpty(content))
                 {
                     continue;

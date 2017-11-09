@@ -28,6 +28,8 @@ namespace ReadTextByVoice
             LoadLocalBookinfos();
         }
 
+       
+
         private void Reader_SpeakProgress(object sender, SpeakProgressEventArgs e)
         {
             double p =Math.Round(((e.CharacterPosition*1.0d) / (SelectedBook.CurrentReadedChapter.ChapterConent.Length*1.0d))*100,1);
@@ -309,6 +311,7 @@ namespace ReadTextByVoice
         /// </summary>
         void LoadLocalBookinfos()
         {
+            return;
             FileStream fs = new FileStream(System.Environment.CurrentDirectory + "//bookinfo.data", FileMode.OpenOrCreate, FileAccess.Write);
             StreamReader rs = new StreamReader(fs);
             while (!rs.EndOfStream)
