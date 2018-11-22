@@ -130,6 +130,7 @@ namespace ReadTextByVoice
             StreamReader rs = new StreamReader(fs);
             Chapter lastChapter = null;
             Chapter currentChaper = null;
+                int index = 1;
             while (!rs.EndOfStream)
             {
                 long pos = rs.BaseStream.Position;
@@ -150,6 +151,7 @@ namespace ReadTextByVoice
                     Chapter ch = new Chapter(content, pos);
                     currentChaper = ch;
                     Catalogs.Add(ch);
+                     
                     if (lastChapter == null)
                     {
                         lastChapter = ch;
@@ -201,7 +203,7 @@ namespace ReadTextByVoice
 
         public void RemoveDuplicateChapters()
         {
-            Catalogs = this.Catalogs.Distinct(new TestDuplicateDefine()).ToList();
+            Catalogs = this.Catalogs.Distinct(new TestDuplicateDefine()).ToList().OrderBy(n=>n.Position).ToList();
             string NewBookName = Path.Insert(path.LastIndexOf('.'), "_New");
             using (FileStream fs = new FileStream(NewBookName, FileMode.Create))
             {
