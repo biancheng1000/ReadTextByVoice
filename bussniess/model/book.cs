@@ -198,5 +198,35 @@ namespace ReadTextByVoice
                 }
             }
         }
+
+        public void RemoveDuplicateChapters()
+        {
+            Catalogs = this.Catalogs.Distinct(new TestDuplicateDefine()).ToList();
+            string NewBookName = Path.Insert(path.LastIndexOf('.'), "_New");
+            using (FileStream fs = new FileStream(NewBookName, FileMode.Create))
+            {
+                StreamWriter ts = new StreamWriter(fs); 
+                for (int i = 0; i < Catalogs.Count; i++)
+                {
+                    ts.WriteLine(Catalogs[i].Name);
+                    ts.WriteLine(catalogs[i].ChapterConent);
+                }
+                ts.Close();
+            }
+            MessageBox.Show("去除重复完成！");
+        }
     }
+
+    public class TestDuplicateDefine : IEqualityComparer<Chapter>
+    {
+        public bool Equals(Chapter x, Chapter y)
+        {
+            return x.Name == y.Name;
+        }
+        public int GetHashCode(Chapter obj)
+        {
+            return obj.ToString().GetHashCode();
+        }
+    }
+
 }

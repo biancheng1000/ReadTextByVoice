@@ -33,6 +33,7 @@
             <Button Content="选择" Width="50" Command="{Binding SelectFileCmd}" Margin="5"/>
             <TextBox Text="{Binding FilePath}" Width="400" AllowDrop="True" Height="40"/>
             <Button Content="加载" Width="50" Margin="5" Command="{Binding LoadBookCmd}"/>
+            <Button Content="去除重复" Width="50" Margin="5" Command="{Binding RemoveCmd}"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" Grid.ColumnSpan="4" Margin="5"

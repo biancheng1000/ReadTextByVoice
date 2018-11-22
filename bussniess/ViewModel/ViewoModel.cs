@@ -187,6 +187,23 @@ namespace ReadTextByVoice
         }
 
         /// <summary>
+        /// 去除重复章节
+        /// </summary>
+        public ICommand RemoveCmd
+        {
+            get
+            {
+                return new DelegateCommand(()=> 
+                {
+                    if (SelectedBook != null)
+                    {
+                        SelectedBook.RemoveDuplicateChapters();
+                    }
+                });
+            }
+        }
+
+        /// <summary>
         ///select novel
         /// </summary>
         public ICommand SelectFileCmd
@@ -300,6 +317,15 @@ namespace ReadTextByVoice
                 StreamWriter rs = new StreamWriter(fs);
                 foreach (Novel en in allBooks)
                 {
+                    if (en.Catalogs.Count == 0)
+                    {
+                        break;
+                    }
+                    if (en.CurrentReadedChapter == null)
+                    {
+                        en.CurrentReadedChapter = en.Catalogs.FirstOrDefault();
+                    }
+                    
                     rs.WriteLine(en.Path +";"+en.CurrentReadedChapter.Name);
                 }
                 rs.Close();
